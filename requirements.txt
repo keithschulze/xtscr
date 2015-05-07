@@ -1,0 +1,8 @@
+numpy==1.9.2
+numpydoc==0.5
+matplotlib==1.4.3
+pandas==0.16.0
+scipy==0.15.1
+seaborn==0.5.1
+git+https://github.com/keithschulze/coord.git@master#egg=coord
+git+https://github.com/aarpon/pIceImarisConnector.git@devel#egg=pIceImarisConnector
