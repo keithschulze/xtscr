@@ -3,7 +3,7 @@ Imaris Xtension to automate the analysis of zebrafish spinal cord recovery follo
 
 ## General Requirements
 * Imaris and XT Module
-* Python 2.7.*
+* Python 3.9.*
 
 You will also need to install several packages (see below):
 
@@ -29,7 +29,7 @@ There are several ways one could do this, the aim is to get xtscr.py file into a
 
 ```
 cd ~/path/to/personal/imaris/xtensions
-git clone https://github.com/keithschulze/xttgmmspotimport.git
+git clone https://github.com/keithschulze/xtscr.git
 ```
 
 or to download the zip from github and put in the place where you keep your Imaris XTensions (or create a place/folder if one doesn't exist). If you creat a new folder for extensions, then add that path into the 'XTension folders' box in the XT modules 'Custom Tools' config (see above).
