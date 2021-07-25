@@ -20,25 +20,16 @@ import math
 import os
 import time
 import threading
-import Queue
+import tkinter as tk
+
+from queue import Queue
+from tkinter import ttk, filedialog, messagebox
+
 import numpy as np
 import pandas as pd
+
 from pIceImarisConnector import pIceImarisConnector as ice
 from scr import scr
-
-import Tkinter
-import ttk
-import tkFileDialog
-import tkMessageBox
-
-
-__author__ = "Keith Schulze"
-__copyright__ = "Copyright 2015, Monash Micro Imaging"
-__license__ = "MIT"
-__version__ = "0.1.0"
-__email__ = "keith.schulze@monash.edu"
-__status__ = "development"
-
 
 
 class SCRGUI(object):
@@ -46,9 +37,9 @@ class SCRGUI(object):
     """docstring for SCRGUI"""
     def __init__(self, master, queue):
         self.queue = queue
-        self.labeltext = Tkinter.StringVar()
+        self.labeltext = tk.StringVar()
         self.labeltext.set("SCR Processing")
-        label = Tkinter.Label(master, width=50, textvariable=self.labeltext)
+        label = tk.Label(master, width=50, textvariable=self.labeltext)
         self.prog = ttk.Progressbar(master, orient='horizontal', length=300,
                                     mode='determinate')
         label.pack(padx=10, pady=10)
@@ -71,7 +62,7 @@ class SCRProcessor(object):
         super(SCRProcessor, self).__init__()
         self.master = master
         self.conn = conn
-        self.queue = Queue.Queue()
+        self.queue = Queue()
         self.gui = SCRGUI(master, self.queue)
         self.running = True
 
@@ -81,7 +72,7 @@ class SCRProcessor(object):
 
         dir_options = {'mustexist': True,
                        'title': 'Please select an output directory'}
-        self.output_dir = tkFileDialog.askdirectory(**dir_options)
+        self.output_dir = filedialog.askdirectory(**dir_options)
         if len(self.output_dir) == 0:
             self.master.quit()
             raise Exception("Open folder cancelled")
@@ -115,8 +106,8 @@ class SCRProcessor(object):
 
     def workerthread(self):
         if not os.path.exists(self.output_dir):
-            print "Folder path does not exist"
-            tkMessageBox.showwarning(
+            print("Folder path does not exist")
+            messagebox.showwarning(
                 "nonexistent folder",
                 "Folder does not exist!"
             )
@@ -152,11 +143,11 @@ class SCRProcessor(object):
         self.queue.put(("Retrieve lesion coordinates", 1))
         mp = self.conn.getAllSurpassChildren(False, "MeasurementPoints")[0]
         if not mp:
-            print "No measurement points marking lesion site specified"
-            tkMessageBox.showerror("No lesion site",
-                                   "Please use measurement points to indicate"
-                                   " lesion site and centre of the notochord"
-                                   " perpendicular to lesion.")
+            print("No measurement points marking lesion site specified")
+            messagebox.showerror("No lesion site",
+                                 "Please use measurement points to indicate"
+                                 " lesion site and centre of the notochord"
+                                 " perpendicular to lesion.")
             self.master.quit()
             return
 
@@ -169,19 +160,19 @@ class SCRProcessor(object):
 
         try:
             spots = self.conn.getSurpassSelection("Spots")
-        except Exception, e:
-            tkMessageBox.showerror("No Spots object selected",
-                                   "No spots object found or selected.")
+        except Exception as err:
+            messagebox.showerror("No Spots object selected",
+                                 "No spots object found or selected.")
             self.master.quit()
             return
 
         if not spots:
-            print "No spots were found. Please select spots object you want"\
-                  "to analyse."
-            tkMessageBox.showerror("No Spots",
-                                   "No spots object founds or not selected."
-                                   " Please select the spots object to want"
-                                   " analyse")
+            print("No spots were found. Please select spots object you want"
+                  "to analyse.")
+            messagebox.showerror("No Spots",
+                                 "No spots object founds or not selected."
+                                 " Please select the spots object to want"
+                                 " analyse")
             self.master.quit()
             return
 
@@ -248,12 +239,12 @@ def xtscr(appid):
     conn = ice(appid)
 
     if not conn.isAlive():
-        print "Could not connect to Imaris"
-        tkMessageBox.showwarning("Connection failed",
-                                 "Could not connect to Imaris!")
+        print("Could not connect to Imaris")
+        messagebox.showwarning("Connection failed",
+                               "Could not connect to Imaris!")
         time.sleep(2)
         return
 
-    root = Tkinter.Tk()
+    root = tk.Tk()
     client = SCRProcessor(root, conn)
     root.mainloop()

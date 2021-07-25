@@ -1,8 +1,7 @@
-numpy==1.11.0
-matplotlib==1.5.1
-pandas==0.18.1
-scipy==0.17.1
-seaborn==0.7.0
-git+https://github.com/keithschulze/coord.git@master#egg=coord
+numpy>=1.11.0
+matplotlib>=1.5.1
+pandas>=0.18.1
+scipy>=0.17.1
+seaborn>=0.7.0
+scikit-image>=0.12
 git+https://github.com/aarpon/pIceImarisConnector.git@devel#egg=pIceImarisConnector
-git+https://gitlab.erc.monash.edu.au/skeith/scr.git#egg=scr
